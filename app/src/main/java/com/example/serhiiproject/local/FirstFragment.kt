@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.serhiiproject.R
+import com.example.serhiiproject.dataClasses.VideoData
 import com.example.serhiiproject.databinding.FragmentFirstBinding
-import com.example.serhiiproject.local.dataClasses.PopularVideosData
-import com.example.serhiiproject.local.dataClasses.VideoData
 import com.example.serhiiproject.remote.Common
 import com.example.serhiiproject.remote.RetrofitServices
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class FirstFragment : Fragment() {
 
@@ -28,13 +26,18 @@ class FirstFragment : Fragment() {
 
 
     private val binding get() = _binding!!
+    private lateinit var viewModel: FirstFragmentViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+
+        viewModel = ViewModelProvider(this)[FirstFragmentViewModel::class.java]
+        viewModel.updateInformation()
+
         return binding.root
     }
 
@@ -42,49 +45,33 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
+        val swipe = view.findViewById<SwipeRefreshLayout>(R.id.swipe)
 
         mService = Common.retrofitService
-
-
 
         adapter = ItemDataHolder(arrayListOf(), ::processToSecondActivity)
         adapter.setData(arrayListOf())
         recyclerView.adapter = adapter
-        getPopularVideos()
+
+        swipe.setOnRefreshListener {
+            viewModel.updateInformation()
+        }
+
+        viewModel.videosData.observe(viewLifecycleOwner)
+        {
+            adapter.setData(it)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner)
+        {
+            swipe.isRefreshing = true
+        }
     }
 
     private fun processToSecondActivity(data: VideoData)
     {
         val bundle = bundleOf("description" to data.snippet!!.description, "videoURL" to "https://www.youtube.com/embed/${data.id}")
         findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle) // description
-    }
-
-    private fun getPopularVideos() {
-        adapter.setData(arrayListOf())
-        mService.getPopularVideos().enqueue(object : Callback<PopularVideosData> {
-            override fun onFailure(call: Call<PopularVideosData>, t: Throwable) {
-
-            }
-
-            override fun onResponse(
-                call: Call<PopularVideosData>,
-                response: Response<PopularVideosData>
-            ) {
-                val resp: PopularVideosData = response.body() as PopularVideosData
-
-                resp.items?.forEach()
-                {
-                    adapter.addData(
-                        VideoData(
-                            it.snippet!!.title,
-                            "https://img.youtube.com/vi/${it.id}/0.jpg",
-                            it.snippet,
-                            it.id
-                        )
-                    )
-                }
-            }
-        })
     }
 
     override fun onDestroyView() {

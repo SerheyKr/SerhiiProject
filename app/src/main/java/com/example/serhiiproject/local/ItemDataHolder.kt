@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.serhiiproject.R
-import com.example.serhiiproject.local.dataClasses.VideoData
+import com.example.serhiiproject.dataClasses.VideoData
 
-class ItemDataHolder(private var data: MutableList<VideoData>, private val processToNextFragment: (VideoData) -> Unit) : // , val functionToCall: () -> Unit
+class ItemDataHolder(private var data: MutableList<VideoData>, private val processToNextFragment: (VideoData) -> Unit) :
     RecyclerView.Adapter<ItemDataHolder.ItemViewHolder>() {
 
 
-    fun setData(dataNew: ArrayList<VideoData>)
+    fun setData(dataNew: MutableList<VideoData>)
     {
         data.clear()
         data.addAll(dataNew)
