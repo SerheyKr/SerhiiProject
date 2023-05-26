@@ -14,10 +14,6 @@ object DataRepos {
     private var dataSafe: MutableList<VideoData> = mutableListOf()
     public var gettingData = true
 
-    init {
-        //getData()
-    }
-
     suspend fun getData(): MutableList<VideoData>
     {
         val data: MutableList<VideoData> = mutableListOf()

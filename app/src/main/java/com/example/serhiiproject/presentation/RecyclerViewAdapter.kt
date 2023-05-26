@@ -1,4 +1,4 @@
-package com.example.serhiiproject.local
+package com.example.serhiiproject.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.serhiiproject.R
 import com.example.serhiiproject.data.remote.model.VideoData
 
-class ItemViewHolder(private var data: MutableList<VideoData>, private val processToNextFragment: (VideoData) -> Unit) :
-    RecyclerView.Adapter<ItemViewHolder.ItemViewHolder>() {
+class RecyclerViewAdapter(private var data: MutableList<VideoData>, private val processToNextFragment: (VideoData) -> Unit) :
+    RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>() {
 
     fun setData(dataNew: MutableList<VideoData>)
     {

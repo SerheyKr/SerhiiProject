@@ -16,7 +16,6 @@ import com.example.serhiiproject.data.remote.Common
 import com.example.serhiiproject.data.remote.RetrofitServices
 import com.example.serhiiproject.data.remote.model.VideoData
 import com.example.serhiiproject.databinding.FragmentFirstBinding
-import com.example.serhiiproject.local.ItemViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -26,7 +25,7 @@ class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private lateinit var mService: RetrofitServices
-    private lateinit var adapter: ItemViewHolder
+    private lateinit var adapter: RecyclerViewAdapter
     private lateinit var recyclerView: RecyclerView
 
 
@@ -58,7 +57,7 @@ class FirstFragment : Fragment() {
 
         mService = Common.retrofitService
 
-        adapter = ItemViewHolder(arrayListOf(), ::processToSecondActivity)
+        adapter = RecyclerViewAdapter(arrayListOf(), ::processToSecondActivity)
         adapter.setData(arrayListOf())
         recyclerView.adapter = adapter
 
