@@ -1,4 +1,4 @@
-package com.example.serhiiproject.local
+package com.example.serhiiproject
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import com.example.serhiiproject.R
 import com.example.serhiiproject.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

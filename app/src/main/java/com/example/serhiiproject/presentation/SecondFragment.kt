@@ -1,4 +1,4 @@
-package com.example.serhiiproject.local
+package com.example.serhiiproject.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

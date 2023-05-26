@@ -1,6 +1,6 @@
-package com.example.serhiiproject.remote
+package com.example.serhiiproject.data.remote
 
-import com.example.serhiiproject.dataClasses.PopularVideosData
+import com.example.serhiiproject.data.remote.model.PopularVideosData
 import retrofit2.Call
 import retrofit2.http.*
 

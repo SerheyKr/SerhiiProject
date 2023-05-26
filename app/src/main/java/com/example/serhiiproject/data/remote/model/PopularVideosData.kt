@@ -1,4 +1,4 @@
-package com.example.serhiiproject.dataClasses
+package com.example.serhiiproject.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

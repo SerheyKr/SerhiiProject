@@ -1,4 +1,4 @@
-package com.example.serhiiproject.local
+package com.example.serhiiproject.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,23 +12,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.serhiiproject.R
-import com.example.serhiiproject.dataClasses.VideoData
+import com.example.serhiiproject.data.remote.Common
+import com.example.serhiiproject.data.remote.RetrofitServices
+import com.example.serhiiproject.data.remote.model.VideoData
 import com.example.serhiiproject.databinding.FragmentFirstBinding
-import com.example.serhiiproject.remote.Common
-import com.example.serhiiproject.remote.RetrofitServices
+import com.example.serhiiproject.local.ItemViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private lateinit var mService: RetrofitServices
-    private lateinit var adapter: ItemDataHolder
+    private lateinit var adapter: ItemViewHolder
     private lateinit var recyclerView: RecyclerView
 
 
     private val binding get() = _binding!!
     private lateinit var viewModel: FirstFragmentViewModel
 
-
+    private lateinit var swipe: SwipeRefreshLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,8 +41,13 @@ class FirstFragment : Fragment() {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this)[FirstFragmentViewModel::class.java]
+        swipe = binding.swipe
         viewModel.updateInformation()
-
+        val workerScope = CoroutineScope(Dispatchers.IO)
+        workerScope.launch {
+            delay(1000)
+            swipe.isRefreshing = false
+        }
         return binding.root
     }
 
@@ -45,16 +55,20 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
-        val swipe = view.findViewById<SwipeRefreshLayout>(R.id.swipe)
 
         mService = Common.retrofitService
 
-        adapter = ItemDataHolder(arrayListOf(), ::processToSecondActivity)
+        adapter = ItemViewHolder(arrayListOf(), ::processToSecondActivity)
         adapter.setData(arrayListOf())
         recyclerView.adapter = adapter
 
-        swipe.setOnRefreshListener {
+        swipe.setOnRefreshListener() {
             viewModel.updateInformation()
+            val workerScope = CoroutineScope(Dispatchers.IO)
+            workerScope.launch {
+                delay(1000)
+                swipe.isRefreshing = false
+            }
         }
 
         viewModel.videosData.observe(viewLifecycleOwner)
@@ -71,7 +85,7 @@ class FirstFragment : Fragment() {
     private fun processToSecondActivity(data: VideoData)
     {
         val bundle = bundleOf("description" to data.snippet!!.description, "videoURL" to "https://www.youtube.com/embed/${data.id}")
-        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle) // description
+        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
     }
 
     override fun onDestroyView() {

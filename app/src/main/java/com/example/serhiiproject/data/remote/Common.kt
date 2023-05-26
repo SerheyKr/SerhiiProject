@@ -1,4 +1,4 @@
-package com.example.serhiiproject.remote
+package com.example.serhiiproject.data.remote
 
 object Common {
     private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"

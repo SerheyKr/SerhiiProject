@@ -1,10 +1,10 @@
-package com.example.serhiiproject.local
+package com.example.serhiiproject.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.serhiiproject.dataClasses.VideoData
-import com.example.serhiiproject.remote.DataUseCase
+import com.example.serhiiproject.data.remote.model.VideoData
+import com.example.serhiiproject.domain.DataUseCase
 import kotlinx.coroutines.launch
 
 class FirstFragmentViewModel(): ViewModel()

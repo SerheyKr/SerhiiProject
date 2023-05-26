@@ -1,4 +1,4 @@
-package com.example.serhiiproject.remote
+package com.example.serhiiproject.data.remote
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

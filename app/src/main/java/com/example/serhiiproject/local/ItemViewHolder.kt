@@ -8,11 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.serhiiproject.R
-import com.example.serhiiproject.dataClasses.VideoData
+import com.example.serhiiproject.data.remote.model.VideoData
 
-class ItemDataHolder(private var data: MutableList<VideoData>, private val processToNextFragment: (VideoData) -> Unit) :
-    RecyclerView.Adapter<ItemDataHolder.ItemViewHolder>() {
-
+class ItemViewHolder(private var data: MutableList<VideoData>, private val processToNextFragment: (VideoData) -> Unit) :
+    RecyclerView.Adapter<ItemViewHolder.ItemViewHolder>() {
 
     fun setData(dataNew: MutableList<VideoData>)
     {
